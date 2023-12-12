@@ -1,0 +1,15 @@
+{{- if .Values.metrics.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "gatewayd.fullname" . }}
+  labels:
+    {{- include "gatewayd.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "gatewayd.selectorLabels" . | nindent 8 }}
+  endpoints:
+  - port: "{{ .Values.metrics.port | toString }}"
+    interval: 15s
+{{- end }}
